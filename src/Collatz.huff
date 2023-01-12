@@ -1,0 +1,15 @@
+#define macro MAIN() = takes (0) returns (0) {
+    // load 1st argument
+    0x04 calldataload               // [calldata[4:32]]
+    dup1 0x01 and                   // [odd/even , calldata[4:32]] 
+    if_odd jumpi
+    0x01 shr                        // [calldata[4:32] >> 1 ]
+    returndatasize mstore           // M[0:32] = calldata[4:32] >> 1
+    msize returndatasize    
+    return                          // return M[0:32]
+    if_odd:
+        0x03 mul
+        0x01 add                    // [calldata[4:32] * 3 + 1 ]
+        returndatasize mstore       // M[0:32] = calldata[4:32] >> 1
+        msize returndatasize return // return M[0:32]
+}
